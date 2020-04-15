@@ -1,4 +1,4 @@
-package com.falmeida.tech.springrestsample;
+package com.falmeida.tech.springrestsample.service;
 
 public class SampleBean {
 

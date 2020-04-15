@@ -1,4 +1,4 @@
-package com.falmeida.tech.springrestsample;
+package com.falmeida.tech.springrestsample.service;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
