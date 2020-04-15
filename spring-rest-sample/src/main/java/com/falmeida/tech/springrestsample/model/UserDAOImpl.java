@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserDAOImpl implements UserDAO{
 
 	private static List<User> users = new ArrayList<User>();
@@ -21,8 +24,9 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void saveUser(User user) {
+	public User saveUser(User user) {
 		users.add(user);
+		return user;
 	}
 
 	@Override

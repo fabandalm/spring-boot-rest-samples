@@ -6,7 +6,7 @@ public interface UserDAO {
 
 	public List<User> findAll();
 	
-	public void saveUser(User user);
+	public User saveUser(User user);
 	
 	public User findUserById(int id);
 	
