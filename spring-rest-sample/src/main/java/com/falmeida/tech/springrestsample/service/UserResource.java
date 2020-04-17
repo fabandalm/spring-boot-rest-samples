@@ -8,9 +8,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+//import org.springframework.hateoas.EntityModel;
+//import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
+//import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,20 +44,20 @@ public class UserResource {
 		return userRepository.findAll();
 	}
 	
-	@GetMapping("/users/{id}")
-	public EntityModel<User> retrieveUser(@PathVariable int id) {
-		Optional<User> user = userRepository.findById(id);
-		if(!user.isPresent()) {
-			throw new UserNotFoundException("id: " + id);
-		}
-		EntityModel<User> model = new EntityModel<>(user.get());
-		 
-		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
-	 
-		model.add(linkTo.withRel("all-users"));
-	 
-		return model;
-	}
+//	@GetMapping("/users/{id}")
+//	public EntityModel<User> retrieveUser(@PathVariable int id) {
+//		Optional<User> user = userRepository.findById(id);
+//		if(!user.isPresent()) {
+//			throw new UserNotFoundException("id: " + id);
+//		}
+//		EntityModel<User> model = new EntityModel<>(user.get());
+//		 
+//		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
+//	 
+//		model.add(linkTo.withRel("all-users"));
+//	 
+//		return model;
+//	}
 	
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
