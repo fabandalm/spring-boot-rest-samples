@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.falmeida.tech.springrestsample.model.Post;
+import com.falmeida.tech.springrestsample.model.PostRepository;
 import com.falmeida.tech.springrestsample.model.User;
 import com.falmeida.tech.springrestsample.model.UserDAOImpl;
 import com.falmeida.tech.springrestsample.model.UserRepository;
@@ -34,6 +35,9 @@ public class UserResource {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PostRepository postRepository;
 	
 	@GetMapping(path="/users")
 	public List<User> retrieveAllUsers(){
@@ -78,6 +82,25 @@ public class UserResource {
 			throw new UserNotFoundException("id: "+id);
 		}
 		return user.get().getPosts();
+	}
+	
+	@PostMapping("/users/{id}/posts")
+	public ResponseEntity<Object> createUserPost(@PathVariable int id, @RequestBody Post post){
+		Optional<User> userOptional = userRepository.findById(id);
+		if(!userOptional.isPresent()) {
+			throw new UserNotFoundException("id: "+id);
+		}
+		
+		User user = userOptional.get();
+		post.setUser(user);
+		postRepository.save(post);
+		
+		URI location = ServletUriComponentsBuilder.
+				fromCurrentRequest().
+				path("/{id}").
+				buildAndExpand(post.getId()).toUri();
+		
+		return ResponseEntity.created(location).build();
 	}
 	
 	public User deleteById(int id) {
