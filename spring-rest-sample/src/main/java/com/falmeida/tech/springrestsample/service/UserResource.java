@@ -3,6 +3,7 @@ package com.falmeida.tech.springrestsample.service;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.falmeida.tech.springrestsample.model.Post;
 import com.falmeida.tech.springrestsample.model.User;
 import com.falmeida.tech.springrestsample.model.UserDAOImpl;
 import com.falmeida.tech.springrestsample.model.UserRepository;
@@ -40,11 +42,11 @@ public class UserResource {
 	
 	@GetMapping("/users/{id}")
 	public EntityModel<User> retrieveUser(@PathVariable int id) {
-		User user = userDAO.findUserById(id);
-		if(user == null) {
+		Optional<User> user = userRepository.findById(id);
+		if(!user.isPresent()) {
 			throw new UserNotFoundException("id: " + id);
 		}
-		EntityModel<User> model = new EntityModel<>(user);
+		EntityModel<User> model = new EntityModel<>(user.get());
 		 
 		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
 	 
@@ -55,7 +57,7 @@ public class UserResource {
 	
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		User createdUser = userDAO.saveUser(user);
+		User createdUser = userRepository.save(user);
 		URI location = ServletUriComponentsBuilder
 					.fromCurrentRequest()
 					.path("/{id}")
@@ -66,10 +68,16 @@ public class UserResource {
 	
 	@DeleteMapping("/users/{id}")
 	public void deleteUser(@PathVariable int id) {
-		User user = deleteById(id);
-		if(user == null) {
-			throw new UserNotFoundException("id: " + id);
+		userRepository.deleteById(id);
+	}
+	
+	@GetMapping("/users/{id}/posts")
+	public List<Post> retrievePostsByUser(@PathVariable int id){
+		Optional<User> user = userRepository.findById(id);
+		if(!user.isPresent()) {
+			throw new UserNotFoundException("id: "+id);
 		}
+		return user.get().getPosts();
 	}
 	
 	public User deleteById(int id) {
