@@ -21,6 +21,10 @@ public class User {
 	@Past
 	private Date birthDate;
 	
+	public User() {
+		
+	}
+	
 	public User(int id, String name, Date birthDate) {
 		super();
 		this.id = id;

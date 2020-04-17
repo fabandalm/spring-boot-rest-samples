@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.falmeida.tech.springrestsample.model.User;
 import com.falmeida.tech.springrestsample.model.UserDAOImpl;
+import com.falmeida.tech.springrestsample.model.UserRepository;
 
 @SuppressWarnings("deprecation")
 @RestController
@@ -29,9 +30,12 @@ public class UserResource {
 	@Autowired
 	private UserDAOImpl userDAO;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@GetMapping(path="/users")
 	public List<User> retrieveAllUsers(){
-		return userDAO.findAll();
+		return userRepository.findAll();
 	}
 	
 	@GetMapping("/users/{id}")
