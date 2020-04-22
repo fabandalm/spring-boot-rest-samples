@@ -43,5 +43,6 @@ public interface TourPackageRepository extends CrudRepository<TourPackage, Strin
     @Override
     @RestResource(exported = false)
     void deleteAll();
+    
 }
 
